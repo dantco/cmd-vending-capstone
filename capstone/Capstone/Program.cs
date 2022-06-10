@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace Capstone.Classes
 {
@@ -12,6 +13,7 @@ namespace Capstone.Classes
 
             //Instantiate the vending machine
             VendingMachine vendingMachine = new VendingMachine();
+            VendingInventory vendingInventory = new VendingInventory();
             Dictionary<string, int> changeDictionary = new Dictionary<string, int>();
 
             //populate the inventory list and/or restock
@@ -55,8 +57,6 @@ namespace Capstone.Classes
                     foreach (KeyValuePair<string, VendingInventory> name in vendingMachine.inventoryDictionary)
                     {
                         Console.WriteLine($"{name.Key}, {name.Value.ItemName}, ${name.Value.ItemPrice} ({name.Value.ItemQuantity} REMAINING)");
-                        //make sure there is a method that reduces itemQuantity
-                        //if item quantity == 0, SOLD OUT
                     }
                 }
                 else if (menu1ActionSelect == 4)  //IF USER SELECTS HIDDEN OPTION
@@ -88,6 +88,7 @@ namespace Capstone.Classes
                             decimal inputMoney = decimal.Parse(Console.ReadLine());
                             totalMoneyProvided += inputMoney;
                             Console.WriteLine($"You have put a total of ${totalMoneyProvided} in the machine.");
+                            vendingInventory.LogFeedMoney(inputMoney, totalMoneyProvided);
                             Console.WriteLine();
                         }
                         else if (actionSelect == 2)
@@ -100,20 +101,22 @@ namespace Capstone.Classes
                                 //if item quantity == 0, SOLD OUT
                             }
                             Console.WriteLine("Enter code of product to purchase:");
-                            string itemSelection = Console.ReadLine();
-                            if(!vendingMachine.inventoryDictionary.ContainsKey(itemSelection.ToUpper()))
+                            string initialItemSelection = Console.ReadLine();
+                            string itemSelection = initialItemSelection.ToUpper();
+                            if(!vendingMachine.inventoryDictionary.ContainsKey(itemSelection))
                             {
                                 Console.WriteLine("Does Not Exist!");
                             }
-                            else if(vendingMachine.inventoryDictionary[itemSelection.ToUpper()].ItemQuantity<=0)
+                            else if(vendingMachine.inventoryDictionary[itemSelection].ItemQuantity<=0)
                             {
                                 Console.WriteLine("Sold Out");
                             }
                             else
                             {
-                                vendingMachine.SoundEffect(vendingMachine.inventoryDictionary[itemSelection.ToUpper()].ItemType);
-                                totalMoneyProvided -= vendingMachine.inventoryDictionary[itemSelection.ToUpper()].ItemPrice;
-                                vendingMachine.inventoryDictionary[itemSelection.ToUpper()].ItemQuantity -= 1;
+                                vendingMachine.SoundEffect(vendingMachine.inventoryDictionary[itemSelection].ItemType);
+                                totalMoneyProvided -= vendingMachine.inventoryDictionary[itemSelection].ItemPrice;
+                                vendingMachine.inventoryDictionary[itemSelection].ItemQuantity -= 1;
+                                vendingInventory.LogItemSale(vendingMachine.inventoryDictionary[itemSelection].ItemName, itemSelection, vendingMachine.inventoryDictionary[itemSelection].ItemPrice, totalMoneyProvided);
                             }
                         }
 
@@ -135,6 +138,8 @@ namespace Capstone.Classes
                         Console.WriteLine($"Quarters : {changeDictionary["Quarters"]}");
                         Console.WriteLine($"Dimes : {changeDictionary["Dimes"]}");
                         Console.WriteLine($"Nickels : {changeDictionary["Nickels"]}");
+
+                        vendingInventory.LogGiveChange(totalMoneyProvided);
                     }
 
                 };
