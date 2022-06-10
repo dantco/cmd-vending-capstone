@@ -27,32 +27,35 @@ namespace Capstone.Classes
 
         //METHODS
 
-        public virtual void LogItemSale(string itemType, string slotLocation, decimal itemPrice, decimal totalMoneyRemaining)
+        public virtual string LogItemSale(string itemType, string slotLocation, decimal itemPrice, decimal totalMoneyRemaining)
         {
             using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\git\c-sharp-mini-capstone-module-1-team-3\capstone\SalesLog.txt", true))
             {
                 DateTime dateTime = DateTime.Now;
                 string output = ($"{dateTime}  {itemType} {slotLocation} ${itemPrice} ${totalMoneyRemaining}");
                 sw.WriteLine(output);
+                return output;
             }
         }
 
-        public void LogFeedMoney(decimal moneyInput, decimal totalMoneyRemaining)
+        public string LogFeedMoney(decimal moneyInput, decimal totalMoneyRemaining)
         {
             using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\git\c-sharp-mini-capstone-module-1-team-3\capstone\SalesLog.txt", true))
             {
                 DateTime dateTime = DateTime.Now;
                 string output = ($"{dateTime}  FEED MONEY: ${moneyInput}.00 ${totalMoneyRemaining}");
                 sw.WriteLine(output);
+                return output;
             }
         }
-        public void LogGiveChange(decimal totalMoneyRemaining)
+        public string LogGiveChange(decimal totalMoneyRemaining)
         {
             using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\git\c-sharp-mini-capstone-module-1-team-3\capstone\SalesLog.txt", true))
             {
                 DateTime dateTime = DateTime.Now;
                 string output = ($"{dateTime}  GIVE CHANGE: ${totalMoneyRemaining} $0.00");
                 sw.WriteLine(output);
+                return output;
             }
         }
     }

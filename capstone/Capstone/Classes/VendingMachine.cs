@@ -31,24 +31,33 @@ namespace Capstone.Classes
             //make sure to account for the error if the user doesn't enter a valid entry at this point
         }
 
-        public void SoundEffect(string itemType)
+        public string SoundEffect(string itemType)
         {
             if (itemType == "Chip")
             {
-                Console.WriteLine("Crunch Crunch, Yum!");
+                string chipSound = "Crunch Crunch, Yum!";
+                Console.WriteLine(chipSound);
+                return chipSound;
             }
             else if (itemType == "Candy")
             {
-                Console.WriteLine("Munch Munch, Yum!");
+                string candySound = "Munch Munch, Yum!";
+                Console.WriteLine(candySound);
+                return candySound;
             }
             else if (itemType == "Drink")
             {
-                Console.WriteLine("Slurp Slurp, Yum!");
+                string drinkSound = "Slurp Slurp, Yum!";
+                Console.WriteLine(drinkSound);
+                return drinkSound;
             }
             else if (itemType == "Gum")
             {
-                Console.WriteLine("Chewy Chewy, Yum!");
+                string gumSound = "Chewy Chewy, Yum!";
+                Console.WriteLine(gumSound);
+                return gumSound;
             }
+            else return "Not a valid item type";
         }
 
         public virtual Dictionary<string, int> ReturnChange(decimal totalMoneyProvided)
