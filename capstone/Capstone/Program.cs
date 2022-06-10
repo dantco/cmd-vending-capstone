@@ -109,7 +109,12 @@ namespace Capstone.Classes
                             }
                             else if(vendingMachine.inventoryDictionary[itemSelection].ItemQuantity<=0)
                             {
-                                Console.WriteLine("Sold Out");
+                                Console.WriteLine($"{vendingMachine.inventoryDictionary[itemSelection].ItemName} is sold out. Please make another selection.");
+                            }
+                            else if (totalMoneyProvided - vendingMachine.inventoryDictionary[itemSelection].ItemPrice <= 0)
+                            {
+                                Console.WriteLine("Insufficient funds. Please add more money or make alternate selection.");
+
                             }
                             else
                             {
